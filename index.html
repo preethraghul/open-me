@@ -32,10 +32,12 @@
         radial-gradient(circle at 85% 12%, rgba(255,255,255,.3) 0 10%, transparent 11%),
         linear-gradient(135deg, var(--pink1), var(--pink2) 56%, #ffdceb);
       display:flex;
-      align-items:center;
+      align-items:flex-start;
       justify-content:center;
-      padding:12px;
-      overflow:hidden;
+      padding:18px 12px 28px;
+      overflow-x:hidden;
+      overflow-y:auto;
+      -webkit-overflow-scrolling:touch;
       position:relative;
     }
 
@@ -669,6 +671,36 @@
     @media (max-height:700px) and (min-width:701px){
       .wrap{transform:scale(.80); transform-origin:center;}
     }
+  
+    @media (max-width:700px){
+      html, body{
+        min-height:100%;
+        height:auto;
+        overflow-x:hidden;
+        overflow-y:auto;
+      }
+
+      body{
+        display:block;
+        padding:14px 10px 32px;
+      }
+
+      .wrap{
+        width:min(94vw, 640px);
+        margin:0 auto;
+        transform:none !important;
+      }
+
+      .envelope-scene{
+        min-height:calc(100svh - 46px);
+      }
+
+      .card{
+        min-height:auto;
+        overflow:visible;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -819,7 +851,7 @@
         <p class="final-copy">
           Perfect. I can’t wait to take you out, pretty girl 🥹💗
         </p>
-        <div class="success-mini">Now you sit back and doll yourself up while I take control from here ✨</div>
+        <div class="success-mini">Now I get to be extra excited about this date ✨</div>
 
         <div class="back-row">
           <button class="primary-btn" id="startAgain">Read again</button>
