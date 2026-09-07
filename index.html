@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dinner Date Invitation 💌</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Caveat:wght@400;500;700&family=Quicksand:wght@400;500;700&display=swap');
+
+    :root{
+      --pink1:#ffe6f0;
+      --pink2:#ffd4e6;
+      --pink3:#fff2f8;
+      --paper:#fffafc;
+      --ink:#7d4158;
+      --soft:#9a6a7e;
+      --accent:#ff5c9a;
+      --accent2:#ff8ab5;
+      --line:#f5c4d7;
+      --shadow:0 18px 45px rgba(183,92,128,.16);
+      --radius:24px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      min-height:100vh;
+      font-family:"Quicksand", system-ui, -apple-system, sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(circle at 15% 20%, rgba(255,255,255,.48) 0 8%, transparent 9%),
+        radial-gradient(circle at 85% 12%, rgba(255,255,255,.3) 0 10%, transparent 11%),
+        linear-gradient(135deg, var(--pink1), var(--pink2) 56%, #ffdceb);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:12px;
+      overflow:hidden;
+      position:relative;
+    }
+
+    .bg-hearts{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      overflow:hidden;
+      z-index:0;
+    }
+
+    .floating-heart{
+      position:absolute;
+      bottom:-30px;
+      color:#ff7bab;
+      opacity:.45;
+      animation:floatUp linear forwards;
+    }
+
+    @keyframes floatUp{
+      from{transform:translateY(0) rotate(0deg);opacity:.5}
+      to{transform:translateY(-120vh) rotate(25deg);opacity:0}
+    }
+
+    .wrap{
+      width:min(92vw, 640px);
+      position:relative;
+      z-index:2;
+    }
+
+    .hidden{display:none !important;}
+
+    /* Envelope Scene */
+    .envelope-scene{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      gap:18px;
+      min-height:560px;
+    }
+
+    .envelope-title{
+      font-family:"Great Vibes", cursive;
+      font-size:clamp(40px, 7vw, 56px);
+      color:#c73874;
+      margin:0;
+      text-shadow:0 8px 24px rgba(199,56,116,.12);
+    }
+
+    .envelope-sub{
+      font-family:"Caveat", cursive;
+      font-size:clamp(22px, 4vw, 28px);
+      color:var(--soft);
+      margin:-8px 0 6px;
+    }
+
+    .envelope-wrap{
+      position:relative;
+      width:min(84vw, 360px);
+      height:255px;
+      cursor:pointer;
+      filter:drop-shadow(0 22px 30px rgba(183,92,128,.18));
+      transition:transform .25s ease;
+    }
+    .envelope-wrap:hover{transform:translateY(-2px)}
+    .envelope{
+      position:absolute;
+      inset:0;
+    }
+
+    .letter{
+      position:absolute;
+      left:50%;
+      bottom:16px;
+      transform:translateX(-50%);
+      width:78%;
+      height:180px;
+      border-radius:16px 16px 10px 10px;
+      background:
+        repeating-linear-gradient(
+          to bottom,
+          rgba(255,255,255,.96) 0px,
+          rgba(255,255,255,.96) 24px,
+          rgba(248,203,221,.7) 25px,
+          rgba(248,203,221,.7) 26px
+        );
+      border:1px solid #ffd0e1;
+      box-shadow:0 12px 20px rgba(188,104,137,.12);
+      padding:18px 16px 10px 34px;
+      overflow:hidden;
+      transition:transform .95s cubic-bezier(.2,.75,.2,1), opacity .5s ease;
+      z-index:1;
+    }
+
+    .letter::before{
+      content:"";
+      position:absolute;
+      left:20px;
+      top:0;
+      bottom:0;
+      width:2px;
+      background:#f1a7c4;
+      opacity:.9;
+    }
+
+    .letter-note{
+      font-family:"Caveat", cursive;
+      font-size:24px;
+      line-height:1.25;
+      color:#9f5f79;
+      text-align:left;
+      margin:0;
+    }
+
+    .envelope-back{
+      position:absolute;
+      inset:auto 0 0 0;
+      height:150px;
+      background:linear-gradient(180deg, #ffcedf, #ffb6cf);
+      border-radius:0 0 22px 22px;
+      z-index:2;
+    }
+
+    .envelope-front{
+      position:absolute;
+      left:0;
+      right:0;
+      bottom:0;
+      height:120px;
+      background:#ffc1d8;
+      clip-path:polygon(0 0, 50% 72%, 100% 0, 100% 100%, 0 100%);
+      border-radius:0 0 22px 22px;
+      z-index:4;
+    }
+
+    .flap{
+      position:absolute;
+      left:0;
+      right:0;
+      top:42px;
+      margin:auto;
+      width:100%;
+      height:110px;
+      background:#ffb0cc;
+      clip-path:polygon(0 0, 50% 100%, 100% 0);
+      transform-origin:top center;
+      transition:transform .8s cubic-bezier(.2,.75,.2,1);
+      z-index:5;
+    }
+
+    .seal{
+      position:absolute;
+      left:50%;
+      top:116px;
+      transform:translateX(-50%);
+      width:58px;
+      height:58px;
+      border-radius:50%;
+      background:linear-gradient(135deg, #ff5e9b, #ff8ab6);
+      color:white;
+      display:grid;
+      place-items:center;
+      font-size:26px;
+      box-shadow:0 8px 16px rgba(199,56,116,.25);
+      z-index:6;
+      transition:opacity .4s ease;
+    }
+
+    .tap-note{
+      font-family:"Caveat", cursive;
+      font-size:26px;
+      color:#a95f7c;
+      margin:0;
+    }
+
+    .open .flap{transform:rotateX(180deg)}
+    .open .seal{opacity:0}
+    .open .letter{
+      transform:translateX(-50%) translateY(-118px);
+    }
+
+    /* Card Scene */
+    .card{
+      position:relative;
+      background:
+        repeating-linear-gradient(
+          to bottom,
+          transparent 0px,
+          transparent 31px,
+          rgba(243,191,210,.55) 32px,
+          rgba(243,191,210,.55) 33px
+        ),
+        linear-gradient(180deg, rgba(255,255,255,.97), rgba(255,250,252,.99));
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:24px 22px 24px 62px;
+      border:1px solid rgba(255,255,255,.85);
+      overflow:hidden;
+      min-height:560px;
+      animation:fadeIn .5s ease;
+    }
+
+    .card::before{
+      content:"";
+      position:absolute;
+      left:33px;
+      top:0;
+      bottom:0;
+      width:2px;
+      background:#f0a8c3;
+      opacity:.85;
+    }
+
+    .card::after{
+      content:"";
+      position:absolute;
+      left:9px;
+      top:20px;
+      bottom:20px;
+      width:16px;
+      background:
+        radial-gradient(circle, #ffd0e1 0 6px, transparent 7px) center top/16px 48px repeat-y;
+      opacity:.95;
+    }
+
+    .corner-heart{
+      position:absolute;
+      font-size:32px;
+      opacity:.16;
+      user-select:none;
+    }
+    .corner-heart.one{top:12px;right:14px;transform:rotate(10deg)}
+    .corner-heart.two{bottom:12px;right:18px;transform:rotate(-10deg)}
+
+    .topline{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:8px;
+      margin-bottom:4px;
+    }
+
+    .tiny-note{
+      display:inline-block;
+      background:rgba(255,255,255,.82);
+      border:1px dashed #f3aac6;
+      color:#d64e86;
+      padding:5px 10px;
+      border-radius:12px;
+      font-size:12px;
+      font-weight:700;
+      transform:rotate(-2deg);
+    }
+
+    .doodle{
+      font-family:"Caveat", cursive;
+      font-size:22px;
+      color:#ea6fa1;
+      transform:rotate(5deg);
+      user-select:none;
+    }
+
+    h1,h2{
+      margin:4px 0 6px;
+      font-family:"Great Vibes", cursive;
+      font-weight:400;
+      color:#c53270;
+      line-height:1;
+    }
+
+    h1{font-size:clamp(36px, 6vw, 54px)}
+    h2{font-size:clamp(32px, 5vw, 46px)}
+
+    .intro,.handwritten,.question,.footer-note,.section-copy,.choice-copy,.final-copy{
+      font-family:"Caveat", cursive;
+      color:var(--soft);
+    }
+
+    .intro{
+      font-size:clamp(18px, 3vw, 24px);
+      margin:0 0 8px;
+    }
+
+    .handwritten{
+      font-size:clamp(20px, 3.3vw, 26px);
+      color:#8a4b65;
+      line-height:1.38;
+      margin:8px 0 10px;
+    }
+
+    .heart-divider{
+      font-size:20px;
+      color:#ef6b9c;
+      margin:0 0 10px;
+      letter-spacing:5px;
+      user-select:none;
+    }
+
+    .details{
+      display:grid;
+      grid-template-columns:repeat(2, 1fr);
+      gap:10px;
+      margin:10px 0 12px;
+    }
+
+    .detail{
+      background:rgba(255,255,255,.76);
+      border:1px solid #f8c5d9;
+      border-radius:16px;
+      padding:10px 10px;
+      box-shadow:0 8px 18px rgba(206,103,144,.07);
+      transform:rotate(-1deg);
+    }
+    .detail:nth-child(2){transform:rotate(1deg)}
+
+    .detail .icon{
+      font-size:20px;
+      margin-bottom:4px;
+    }
+    .detail b{
+      display:block;
+      font-size:13px;
+      margin-bottom:2px;
+      color:#b5346d;
+    }
+    .detail span{
+      display:block;
+      font-family:"Caveat", cursive;
+      font-size:20px;
+      color:#86546a;
+    }
+
+    .question{
+      font-size:clamp(24px, 4vw, 30px);
+      color:#b43269;
+      margin:8px 0 12px;
+    }
+
+    .dress-note{
+      margin:7px 0 10px;
+      padding:9px 11px;
+      border-radius:15px;
+      background:rgba(255,255,255,.76);
+      border:1px dashed #f2b8cf;
+      box-shadow:0 7px 16px rgba(206,103,144,.06);
+      transform:rotate(-.3deg);
+    }
+
+    .dress-note .label{
+      display:block;
+      font-size:11px;
+      font-weight:700;
+      color:#c24779;
+      text-transform:uppercase;
+      letter-spacing:.05em;
+      margin-bottom:2px;
+    }
+
+    .dress-note .text{
+      font-family:"Caveat", cursive;
+      font-size:20px;
+      line-height:1.22;
+      color:#8b5870;
+    }
+
+    .buttons{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+      min-height:54px;
+      position:relative;
+    }
+
+    button{
+      border:none;
+      border-radius:999px;
+      padding:11px 18px;
+      cursor:pointer;
+      transition:.22s ease;
+      font-family:"Quicksand", sans-serif;
+      font-weight:700;
+      font-size:14px;
+      box-shadow:0 8px 18px rgba(196,72,122,.14);
+    }
+
+    .primary-btn{
+      background:linear-gradient(135deg, var(--accent), var(--accent2));
+      color:white;
+    }
+
+    .secondary-btn{
+      background:white;
+      color:#8b4e66;
+      border:1px solid #f3bdd1;
+    }
+
+    .primary-btn:hover{transform:translateY(-2px) scale(1.03)}
+
+    .footer-note{
+      margin-top:10px;
+      font-size:20px;
+      color:#a55f7c;
+    }
+
+    .section{
+      animation:fadeIn .35s ease;
+    }
+
+    .section-copy{
+      font-size:24px;
+      margin:0 0 12px;
+      color:#8a5770;
+      line-height:1.35;
+    }
+
+    .choice-copy{
+      font-size:22px;
+      margin:0 0 12px;
+      line-height:1.35;
+    }
+
+    .pill-choices{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0,1fr));
+      gap:12px;
+      margin-top:8px;
+    }
+
+    .cuisine-btn{
+      border-radius:18px;
+      padding:16px 14px;
+      background:rgba(255,255,255,.8);
+      border:1px solid #f3c0d4;
+      color:#a2416f;
+      font-size:15px;
+      text-align:center;
+    }
+
+    .cuisine-btn .emoji{
+      display:block;
+      font-size:28px;
+      margin-bottom:6px;
+    }
+
+    .option-grid{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:10px;
+      margin:10px 0 0;
+    }
+
+    .option-card{
+      background:rgba(255,255,255,.8);
+      border:1px solid #f5c7d9;
+      border-radius:18px;
+      padding:12px 14px;
+      text-align:left;
+      cursor:pointer;
+      transition:transform .18s ease, box-shadow .18s ease;
+      box-shadow:0 8px 18px rgba(206,103,144,.07);
+    }
+
+    .option-card:hover{
+      transform:translateY(-2px);
+      box-shadow:0 12px 20px rgba(206,103,144,.11);
+    }
+
+    .option-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:2px;
+    }
+
+    .option-name{
+      font-size:15px;
+      font-weight:700;
+      color:#b1386d;
+    }
+
+    .option-tag{
+      font-size:11px;
+      font-weight:700;
+      color:#d14f84;
+      background:#fff1f6;
+      border:1px solid #ffd4e4;
+      padding:4px 8px;
+      border-radius:999px;
+      white-space:nowrap;
+    }
+
+    .option-desc{
+      font-family:"Caveat", cursive;
+      font-size:21px;
+      color:#8c5970;
+      line-height:1.25;
+      margin-top:4px;
+    }
+
+    .option-actions{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-top:9px;
+    }
+
+    .pick-label{
+      font-size:12px;
+      font-weight:700;
+      color:#c1497b;
+    }
+
+    .menu-link{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:7px 11px;
+      border-radius:999px;
+      background:#fff1f6;
+      border:1px solid #f7c6d8;
+      color:#b83e73;
+      text-decoration:none;
+      font-size:12px;
+      font-weight:700;
+      transition:.18s ease;
+      box-shadow:none;
+    }
+
+    .menu-link:hover{
+      transform:translateY(-1px);
+      background:#ffe6f0;
+    }
+
+    .selected-pill{
+      display:inline-block;
+      margin:2px 0 12px;
+      padding:6px 12px;
+      border-radius:999px;
+      background:#fff0f7;
+      border:1px solid #ffd3e3;
+      color:#c54279;
+      font-size:12px;
+      font-weight:700;
+      letter-spacing:.02em;
+      text-transform:uppercase;
+    }
+
+    .final-box{
+      background:rgba(255,255,255,.78);
+      border:1px solid #f7cada;
+      border-radius:18px;
+      padding:14px;
+      margin:10px 0 14px;
+      box-shadow:0 8px 18px rgba(206,103,144,.07);
+    }
+
+    .final-copy{
+      font-size:25px;
+      line-height:1.35;
+      color:#8a5670;
+      margin:0;
+    }
+
+    .final-choice{
+      font-family:"Great Vibes", cursive;
+      font-size:42px;
+      color:#c73473;
+      margin:8px 0 4px;
+    }
+
+    .success-mini{
+      font-family:"Caveat", cursive;
+      font-size:22px;
+      color:#a25c78;
+      margin-top:4px;
+    }
+
+    .burst{
+      position:fixed;
+      left:50%;
+      top:50%;
+      font-size:24px;
+      pointer-events:none;
+      z-index:8;
+      animation:burst .95s ease-out forwards;
+    }
+
+    .back-row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:14px;
+    }
+
+    @keyframes fadeIn{
+      from{opacity:0; transform:translateY(8px)}
+      to{opacity:1; transform:translateY(0)}
+    }
+
+    @keyframes burst{
+      to{
+        transform:translate(var(--x), var(--y)) rotate(180deg) scale(.45);
+        opacity:0;
+      }
+    }
+
+    @media (max-width:700px){
+      .card{
+        padding:22px 16px 20px 52px;
+        min-height:auto;
+      }
+      .card::before{left:28px}
+      .card::after{left:7px}
+      .details{grid-template-columns:1fr}
+      .pill-choices{grid-template-columns:1fr}
+      .buttons{flex-direction:column}
+      .buttons button{width:100%}
+      .back-row button{width:auto}
+    }
+
+    @media (max-height:820px) and (min-width:701px){
+      .wrap{transform:scale(.88); transform-origin:center;}
+    }
+
+    @media (max-height:700px) and (min-width:701px){
+      .wrap{transform:scale(.80); transform-origin:center;}
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-hearts" id="bgHearts"></div>
+
+  <div class="wrap">
+    <!-- Envelope -->
+    <section class="envelope-scene" id="envelopeScene">
+      <h1 class="envelope-title">A little note for you</h1>
+      <p class="envelope-sub">tap the envelope to open it 💌</p>
+
+      <div class="envelope-wrap" id="envelopeWrap" role="button" tabindex="0" aria-label="Open the envelope">
+        <div class="envelope">
+          <div class="letter" id="letter">
+            <p class="letter-note">
+              Hi love,<br>
+              I have a tiny question for you... ♡
+            </p>
+          </div>
+          <div class="envelope-back"></div>
+          <div class="envelope-front"></div>
+          <div class="flap"></div>
+          <div class="seal">💖</div>
+        </div>
+      </div>
+
+      <p class="tap-note">Open meeee ✨</p>
+    </section>
+
+    <!-- Main notebook card -->
+    <main class="card hidden" id="mainCard">
+      <div class="corner-heart one">💗</div>
+      <div class="corner-heart two">💕</div>
+
+      <!-- Section 1: Invitation -->
+      <section class="section" id="inviteSection">
+        <div class="topline">
+          <div class="tiny-note">for my favourite girl ♡</div>
+          <div class="doodle">xoxo</div>
+        </div>
+
+        <h1>Just one little question...</h1>
+        <p class="intro">Hi love,</p>
+
+        <p class="handwritten">
+          I was wondering... would you let me take you out on a sweet little dinner date?
+          Just us, a lovely meal, some good laughs, and me admiring how pretty you look all night.
+        </p>
+
+        <div class="heart-divider">♡ ♡ ♡</div>
+
+        <div class="details">
+          <div class="detail">
+            <div class="icon">📅</div>
+            <b>Date</b>
+            <span id="dateText">Friday, 11 September</span>
+          </div>
+          <div class="detail">
+            <div class="icon">🕖</div>
+            <b>Time</b>
+            <span id="timeText">7:00 PM</span>
+          </div>
+        </div>
+
+        <div class="dress-note">
+          <span class="label">Dress code 💕</span>
+          <div class="text">
+            Dress cute and make sure the curls are on full show ✨<br>
+            I’ll be wearing a nice shirt with one of the cute jeans I bought last week hehe 😌
+          </div>
+        </div>
+
+        <div class="question">So... will you go with me? 💞</div>
+
+        <div class="buttons">
+          <button class="primary-btn" id="yesBtn">Yes, of course 💗</button>
+          <button class="secondary-btn" id="noBtn">No 🤍</button>
+        </div>
+
+        <div class="footer-note">P.S. saying yes would make me very, very happy ✨</div>
+      </section>
+
+      <!-- Section 2: Cuisine Choice -->
+      <section class="section hidden" id="cuisineSection">
+        <div class="topline">
+          <div class="tiny-note">step 2: your choice 🍽️</div>
+          <div class="doodle">yum yum</div>
+        </div>
+
+        <h2>Pick your craving</h2>
+        <p class="section-copy">
+          Since you’re the star of this date, you get to choose the cuisine first 💕
+        </p>
+
+        <div class="pill-choices">
+          <button class="cuisine-btn" data-cuisine="Indian">
+            <span class="emoji">🍛</span>
+            Indian
+          </button>
+          <button class="cuisine-btn" data-cuisine="Mexican">
+            <span class="emoji">🌮</span>
+            Mexican
+          </button>
+        </div>
+
+        <div class="back-row">
+          <button class="secondary-btn" id="backToInvite">← Back</button>
+        </div>
+      </section>
+
+      <!-- Section 3: Restaurant Options -->
+      <section class="section hidden" id="optionsSection">
+        <div class="topline">
+          <div class="tiny-note">step 3: final pick 🌷</div>
+          <div class="doodle">choose one</div>
+        </div>
+
+        <h2 id="optionsHeading">Your options</h2>
+        <div class="selected-pill" id="selectedCuisinePill">Indian cuisine</div>
+        <p class="choice-copy">
+          Here are three cute options for our little dinner date ✨
+        </p>
+
+        <div class="option-grid" id="optionGrid"></div>
+
+        <div class="back-row">
+          <button class="secondary-btn" id="backToCuisine">← Back</button>
+        </div>
+      </section>
+
+      <!-- Section 4: Final -->
+      <section class="section hidden" id="finalSection">
+        <div class="topline">
+          <div class="tiny-note">date confirmed 💖</div>
+          <div class="doodle">yayyy</div>
+        </div>
+
+        <h2>It’s a date!</h2>
+
+        <div class="final-box">
+          <p class="final-copy">You picked:</p>
+          <div class="final-choice" id="finalRestaurant">Restaurant Name</div>
+          <p class="final-copy" id="finalSummary">
+            Friday, 11 September at 7:00 PM
+          </p>
+        </div>
+
+        <p class="final-copy">
+          Perfect. I can’t wait to take you out, pretty girl 🥹💗
+        </p>
+        <div class="success-mini">Now you sit back and doll yourself up while I take control from here ✨</div>
+
+        <div class="back-row">
+          <button class="primary-btn" id="startAgain">Read again</button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const CONFIG = {
+      date: "Friday, 11 September",
+      time: "7:00 PM",
+      restaurants: {
+        Indian: [
+          {
+            name: "Elchi",
+            tag: "elegant pick",
+            desc: "A polished Indian dinner spot with a warm, romantic feel.",
+            menu: "https://www.elchirestaurant.com.au/menu"
+          },
+          {
+            name: "Atta",
+            tag: "modern Indian",
+            desc: "Stylish, refined, and perfect for a proper date-night dinner.",
+            menu: "https://www.attarestaurant.com.au/menu"
+          },
+          {
+            name: "Rasam — Port Melbourne",
+            tag: "cozy favourite",
+            desc: "A lovely Port Melbourne option for comforting Indian food and a relaxed date.",
+            menu: "https://therasam.com.au/menu/"
+          }
+        ],
+        Mexican: [
+          {
+            name: "Bodega Underground",
+            tag: "fun & lively",
+            desc: "A playful underground Mexican spot with a great date-night atmosphere.",
+            menu: "https://www.bodegaunderground.com.au/menu"
+          },
+          {
+            name: "Hacienda Mexicana",
+            tag: "colourful pick",
+            desc: "A vibrant Mexican dinner option for good food, laughs, and a cute night out.",
+            menu: "https://www.haciendamelbourne.com.au/download/food-menu/"
+          },
+          {
+            name: "Amigos Y Familia — Hardware Lane",
+            tag: "city date vibe",
+            desc: "A fun Hardware Lane choice with a lively city-night feel.",
+            menu: "https://amigosyfamilia.com.au/menu/"
+          }
+        ]
+      }
+    };
+
+    document.getElementById("dateText").textContent = CONFIG.date;
+    document.getElementById("timeText").textContent = CONFIG.time;
+
+    const envelopeScene = document.getElementById("envelopeScene");
+    const envelopeWrap = document.getElementById("envelopeWrap");
+    const mainCard = document.getElementById("mainCard");
+
+    const inviteSection = document.getElementById("inviteSection");
+    const cuisineSection = document.getElementById("cuisineSection");
+    const optionsSection = document.getElementById("optionsSection");
+    const finalSection = document.getElementById("finalSection");
+
+    const yesBtn = document.getElementById("yesBtn");
+    const noBtn = document.getElementById("noBtn");
+
+    let selectedCuisine = "";
+    let selectedRestaurant = "";
+
+    function showSection(section){
+      [inviteSection, cuisineSection, optionsSection, finalSection].forEach(s => s.classList.add("hidden"));
+      section.classList.remove("hidden");
+    }
+
+    function openEnvelope(){
+      if(envelopeWrap.classList.contains("open")) return;
+      envelopeWrap.classList.add("open");
+
+      setTimeout(() => {
+        envelopeScene.classList.add("hidden");
+        mainCard.classList.remove("hidden");
+        showSection(inviteSection);
+      }, 1200);
+    }
+
+    envelopeWrap.addEventListener("click", openEnvelope);
+    envelopeWrap.addEventListener("keypress", (e) => {
+      if(e.key === "Enter" || e.key === " "){
+        e.preventDefault();
+        openEnvelope();
+      }
+    });
+
+    const noTexts = [
+      "Are you sure? 🥺",
+      "That can't be right 💔",
+      "Try again pretty please 🌷",
+      "Hmm... maybe yes? 💞",
+      "I’ll buy dessert too 🍰",
+      "Nope, that’s not the one 😌"
+    ];
+    let noIndex = 0;
+
+    function dodgeNoButton(){
+      noBtn.textContent = noTexts[noIndex % noTexts.length];
+      noIndex++;
+
+      yesBtn.style.transform = `scale(${Math.min(1.18, 1 + noIndex * 0.03)})`;
+
+      if (window.innerWidth < 700) {
+        const x = Math.random() * 100 - 50;
+        noBtn.style.transform = `translateX(${x}px)`;
+      } else {
+        const x = Math.random() * 180 - 90;
+        const y = Math.random() * 60 - 30;
+        const r = Math.random() * 10 - 5;
+        noBtn.style.transform = `translate(${x}px, ${y}px) rotate(${r}deg)`;
+      }
+    }
+
+    ["mouseenter", "click", "touchstart"].forEach(evt => {
+      noBtn.addEventListener(evt, (e) => {
+        if(evt === "click") e.preventDefault();
+        dodgeNoButton();
+      });
+    });
+
+    yesBtn.addEventListener("click", () => {
+      showSection(cuisineSection);
+      celebrate();
+    });
+
+    document.getElementById("backToInvite").addEventListener("click", () => showSection(inviteSection));
+    document.getElementById("backToCuisine").addEventListener("click", () => showSection(cuisineSection));
+
+    document.querySelectorAll(".cuisine-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        selectedCuisine = btn.dataset.cuisine;
+        renderOptions(selectedCuisine);
+        showSection(optionsSection);
+      });
+    });
+
+    function renderOptions(cuisine){
+      const heading = document.getElementById("optionsHeading");
+      const pill = document.getElementById("selectedCuisinePill");
+      const grid = document.getElementById("optionGrid");
+      heading.textContent = cuisine + " it is ✨";
+      pill.textContent = cuisine + " cuisine";
+
+      grid.innerHTML = "";
+      CONFIG.restaurants[cuisine].forEach(place => {
+        const card = document.createElement("div");
+        card.className = "option-card";
+        card.setAttribute("role", "button");
+        card.setAttribute("tabindex", "0");
+        card.innerHTML = `
+          <div class="option-head">
+            <div class="option-name">${place.name}</div>
+            <div class="option-tag">${place.tag}</div>
+          </div>
+          <div class="option-desc">${place.desc}</div>
+          <div class="option-actions">
+            <span class="pick-label">Tap card to choose 💗</span>
+            <a class="menu-link" href="${place.menu}" target="_blank" rel="noopener noreferrer">View menu ↗</a>
+          </div>
+        `;
+
+        const menuLink = card.querySelector(".menu-link");
+        menuLink.addEventListener("click", (e) => e.stopPropagation());
+
+        card.addEventListener("click", () => selectRestaurant(place.name, cuisine));
+        card.addEventListener("keypress", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            selectRestaurant(place.name, cuisine);
+          }
+        });
+        grid.appendChild(card);
+      });
+    }
+
+    function selectRestaurant(name, cuisine){
+      selectedRestaurant = name;
+      document.getElementById("finalRestaurant").textContent = name;
+      document.getElementById("finalSummary").textContent = `${cuisine} • ${CONFIG.date} at ${CONFIG.time}`;
+      showSection(finalSection);
+      celebrate();
+    }
+
+    document.getElementById("startAgain").addEventListener("click", () => {
+      selectedCuisine = "";
+      selectedRestaurant = "";
+      noIndex = 0;
+      noBtn.textContent = "No 🤍";
+      noBtn.style.transform = "none";
+      yesBtn.style.transform = "none";
+      showSection(inviteSection);
+    });
+
+    function celebrate(){
+      const icons = ["💖","💕","💗","✨","🌸","🥰","🌷"];
+      for(let i=0; i<28; i++){
+        const el = document.createElement("span");
+        el.className = "burst";
+        el.textContent = icons[Math.floor(Math.random() * icons.length)];
+        el.style.setProperty("--x", `${Math.random()*600 - 300}px`);
+        el.style.setProperty("--y", `${Math.random()*420 - 210}px`);
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 1000);
+      }
+    }
+
+    function spawnHeart(){
+      const heart = document.createElement("span");
+      heart.className = "floating-heart";
+      heart.textContent = ["♡","♥","💗","💕","✨"][Math.floor(Math.random()*5)];
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.fontSize = 14 + Math.random() * 18 + "px";
+      heart.style.animationDuration = 5 + Math.random() * 5 + "s";
+      document.getElementById("bgHearts").appendChild(heart);
+      setTimeout(() => heart.remove(), 10000);
+    }
+    setInterval(spawnHeart, 700);
+  </script>
+</body>
+</html>
