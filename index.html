@@ -577,6 +577,14 @@
       background:#ffe6f0;
     }
 
+    .save-note{
+      font-family:"Caveat", cursive;
+      font-size:18px;
+      line-height:1.25;
+      color:#a86280;
+      margin:-4px 0 10px;
+    }
+
     .selected-pill{
       display:inline-block;
       margin:2px 0 12px;
@@ -823,6 +831,7 @@
         <p class="choice-copy">
           Here are three cute options for our little dinner date ✨
         </p>
+        <p class="save-note">Your final pick will be saved so I know what to book for us 💕</p>
 
         <div class="option-grid" id="optionGrid"></div>
 
@@ -851,7 +860,7 @@
         <p class="final-copy">
           Perfect. I can’t wait to take you out, pretty girl 🥹💗
         </p>
-        <div class="success-mini">Now all you need to do is sit back and doll yourself up while I take control of things from here Thangameee ✨</div>
+        <div class="success-mini">Now all you need to do is doll up and be my pretty lil passenger princess while I take control of things from here Thangameee ✨</div>
 
         <div class="back-row">
           <button class="primary-btn" id="startAgain">Read again</button>
@@ -908,6 +917,56 @@
       }
     };
 
+    // Paste the /exec URL from your deployed Google Apps Script web app here.
+    const RESPONSE_ENDPOINT = "https://script.google.com/macros/s/AKfycbzUSXX5yGKHHnJljSz7skUnD1ALjXGnTo216GjLnPdlnpda9d9NPzfrPhedrwOduEa0/exec";
+
+    function getResponseId(){
+      const key = "dinnerDateResponseId";
+      let id = localStorage.getItem(key);
+      if (!id) {
+        if (window.crypto && crypto.randomUUID) {
+          id = crypto.randomUUID();
+        } else {
+          id = Date.now().toString(36) + "-" + Math.random().toString(36).slice(2);
+        }
+        localStorage.setItem(key, id);
+      }
+      return id;
+    }
+
+    function recordChoice(cuisine, restaurant){
+      if (!RESPONSE_ENDPOINT || RESPONSE_ENDPOINT.includes("PASTE_YOUR_")) {
+        console.warn("Google Sheets response endpoint has not been configured yet.");
+        return;
+      }
+
+      const fields = {
+        responseId: getResponseId(),
+        cuisine,
+        restaurant,
+        date: CONFIG.date,
+        time: CONFIG.time
+      };
+
+      const form = document.createElement("form");
+      form.method = "POST";
+      form.action = RESPONSE_ENDPOINT;
+      form.target = "responseSink";
+      form.style.display = "none";
+
+      Object.entries(fields).forEach(([name, value]) => {
+        const input = document.createElement("input");
+        input.type = "hidden";
+        input.name = name;
+        input.value = value;
+        form.appendChild(input);
+      });
+
+      document.body.appendChild(form);
+      form.submit();
+      setTimeout(() => form.remove(), 1000);
+    }
+
     document.getElementById("dateText").textContent = CONFIG.date;
     document.getElementById("timeText").textContent = CONFIG.time;
 
@@ -952,11 +1011,11 @@
 
     const noTexts = [
       "Are you sure? 🥺",
-      "That can't be right 💔",
+      "Loosu mari panada 💞",
+      "Bro unga kuda pechu ka 💔",
       "Try again pretty please 🌷",
-      "Hmm... maybe yes? 💞",
-      "I’ll buy dessert too 🍰",
-      "Nope, that’s not the one 😌"
+      "Seri theeni pandaram, will get you desert too 💞",
+      "nee varaaa, you have no choice 😌"
     ];
     let noIndex = 0;
 
@@ -1043,6 +1102,7 @@
       selectedRestaurant = name;
       document.getElementById("finalRestaurant").textContent = name;
       document.getElementById("finalSummary").textContent = `${cuisine} • ${CONFIG.date} at ${CONFIG.time}`;
+      recordChoice(cuisine, name);
       showSection(finalSection);
       celebrate();
     }
@@ -1082,8 +1142,6 @@
     }
     setInterval(spawnHeart, 700);
   </script>
+  <iframe name="responseSink" title="response recorder" style="display:none" aria-hidden="true"></iframe>
 </body>
 </html>
-
-
-
